@@ -11,3 +11,4 @@ Link to a course site: http://www.fer.unizg.hr/en/course/icg
 ### 2nd laboratory exercise
 * written in C++
 * implementation of Bresenham's line algorithm
+
