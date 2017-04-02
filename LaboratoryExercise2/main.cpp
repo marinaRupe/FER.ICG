@@ -15,14 +15,13 @@ void myLine(GLint xa, GLint ya, GLint xb, GLint yb);
 void bresenham1(GLint xa, GLint ya, GLint xb, GLint yb);
 void bresenham2(GLint xa, GLint ya, GLint xb, GLint yb);
 
-int main(int argc, char ** argv)
-{
+int main(int argc, char ** argv) {
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(width, height);
     glutInitWindowPosition(100, 100);
     glutInit(&argc, argv);
 
-    window = glutCreateWindow("Glut OpenGL Linija");
+    window = (GLuint) glutCreateWindow("Glut OpenGL Linija");
     glutReshapeFunc(myReshape);
     glutDisplayFunc(myDisplay);
     glutMouseFunc(myMouse);
@@ -34,35 +33,28 @@ int main(int argc, char ** argv)
     return 0;
 }
 
-void myDisplay()
-{
-    //printf("Pozvan myDisplay()\n");
-    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f); //  boja pozadine
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //brisanje nakon svake iscrtane linije
+void myDisplay() {
     glFlush();
 }
 
-void myReshape(int w, int h)
-{
-    //printf("Pozvan myReshape()\n");
-    width = w; height = h;
+void myReshape(int w, int h) {
+    width = (GLuint) w; height = (GLuint) h;
     Ix = 0;
     glViewport(0, 0, width, height);
 
-    glMatrixMode(GL_PROJECTION);		//	matrica projekcije
-    glLoadIdentity();					//	jedinicna matrica
-    gluOrtho2D(0, width, 0, height); 	//	okomita projekcija
-    glMatrixMode(GL_MODELVIEW);			//	matrica pogleda
-    glLoadIdentity();					//	jedinicna matrica
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, width, 0, height);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // boja pozadine
-    glClear(GL_COLOR_BUFFER_BIT);		//	brisanje pozadine
-    glPointSize(1.0);					//	postavi velicinu tocke za liniju
-    glColor3f(0.0f, 0.0f, 0.0f);		//	postavi boju linije
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPointSize(1.0);
+    glColor3f(0.0f, 0.0f, 0.0f);
 }
 
-void myLine(GLint xa, GLint ya, GLint xb, GLint yb)
-{
+void myLine(GLint xa, GLint ya, GLint xb, GLint yb) {
     glBegin(GL_LINES);
     {
         glVertex2i(xa, ya + 5);
@@ -70,51 +62,33 @@ void myLine(GLint xa, GLint ya, GLint xb, GLint yb)
     }
     glEnd();
 
-    if (xa <= xb)
-    {
-        if (ya <= yb)
-        {
-            bresenham1(xa, ya, xb, yb);
-        }
-        else
-        {
-            bresenham2(xa, ya, xb, yb);
-        }
+    if (xa <= xb) {
+        if (ya <= yb) bresenham1(xa, ya, xb, yb);
+        else bresenham2(xa, ya, xb, yb);
     }
-    else
-    {
-        if (ya >= yb)
-        {
-            bresenham1(xb, yb, xa, ya);
-        }
-        else
-        {
-            bresenham2(xb, yb, xa, ya);
-        }
+    else {
+        if (ya >= yb) bresenham1(xb, yb, xa, ya);
+        else bresenham2(xb, yb, xa, ya);
     }
 }
 
-void bresenham1(GLint xa, GLint ya, GLint xb, GLint yb)
-{
+void bresenham1(GLint xa, GLint ya, GLint xb, GLint yb) {
     GLint  a, yf;
-    GLint  x, yc, korekcija;
+    GLint  x, yc, correction;
 
     glBegin(GL_POINTS);
-    if (yb - ya <= xb - xa)
-    {
+    if (yb - ya <= xb - xa) {
         a = 2 * (yb - ya);
         yc = ya;
         yf = -(xb - xa);
-        korekcija = -2 * (xb - xa);
+        correction = -2 * (xb - xa);
 
-        for (x = xa; x <= xb; x++)
-        {
+        for (x = xa; x <= xb; x++) {
             glVertex2i(x, yc);
             yf += a;
 
-            if (yf >= 0)
-            {
-                yf += korekcija;
+            if (yf >= 0) {
+                yf += correction;
                 yc++;
             }
         }
@@ -125,16 +99,14 @@ void bresenham1(GLint xa, GLint ya, GLint xb, GLint yb)
         a = 2 * (yb - ya);
         yc = ya;
         yf = -(xb - xa);
-        korekcija = -2 * (xb - xa);
+        correction = -2 * (xb - xa);
 
-        for (x = xa; x <= xb; x++)
-        {
+        for (x = xa; x <= xb; x++) {
             glVertex2i(yc, x);
             yf += a;
 
-            if (yf >= 0)
-            {
-                yf += korekcija;
+            if (yf >= 0) {
+                yf += correction;
                 yc++;
             }
         }
@@ -142,48 +114,41 @@ void bresenham1(GLint xa, GLint ya, GLint xb, GLint yb)
     glEnd();
 }
 
-void bresenham2(GLint xa, GLint ya, GLint xb, GLint yb)
-{
+void bresenham2(GLint xa, GLint ya, GLint xb, GLint yb) {
     GLint  a, yf;
-    GLint  x, yc, korekcija;
+    GLint  x, yc, correction;
 
     glBegin(GL_POINTS);
-    if (-(yb - ya) <= xb - xa)
-    {
+    if (-(yb - ya) <= xb - xa) {
         a = 2 * (yb - ya);
         yc = ya;
         yf = xb - xa;
-        korekcija = 2 * (xb - xa);
+        correction = 2 * (xb - xa);
 
-        for (x = xa; x <= xb; x++)
-        {
+        for (x = xa; x <= xb; x++) {
             glVertex2i(x, yc);
             yf += a;
 
-            if (yf <= 0)
-            {
-                yf += korekcija;
+            if (yf <= 0) {
+                yf += correction;
                 yc--;
             }
         }
     }
-    else
-    {
+    else {
         x = xb; xb = ya; ya = x;
         x = xa; xa = yb; yb = x;
         a = 2 * (yb - ya);
         yc = ya;
         yf = xb - xa;
-        korekcija = 2 * (xb - xa);
+        correction = 2 * (xb - xa);
 
-        for (x = xa; x <= xb; x++)
-        {
+        for (x = xa; x <= xb; x++) {
             glVertex2i(yc, x);
             yf += a;
 
-            if (yf <= 0)
-            {
-                yf += korekcija;
+            if (yf <= 0) {
+                yf += correction;
                 yc--;
             }
         }
@@ -192,11 +157,8 @@ void bresenham2(GLint xa, GLint ya, GLint xb, GLint yb)
 }
 
 
-void myMouse(int button, int state, int x, int y)
-{
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-
-    {
+void myMouse(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         Lx[Ix] = x;
         Ly[Ix] = height - y;
         Ix = Ix ^ 1;
@@ -207,17 +169,14 @@ void myMouse(int button, int state, int x, int y)
         printf("Koordinate tocke %d: %d %d \n", Ix ^ 1, x, y);
         glFlush();
     }
-    else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-    {
+    else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
         myReshape(width, height);
     }
 }
 
 
-void myKeyboard(unsigned char theKey, int mouseX, int mouseY)
-{
-    switch (theKey)
-    {
+void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
+    switch (theKey) {
         case 'r':
             glColor3f(1, 0, 0);
             break;
@@ -234,7 +193,6 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY)
             glColor3f(0, 0, 0);
 
     }
-    glRecti(width - 15, height - 15, width, height); // crta mali kvadrat u boji
+    glRecti(width - 15, height - 15, width, height);
     glFlush();
 }
-
