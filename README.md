@@ -11,3 +11,13 @@ Link to a course site: http://www.fer.unizg.hr/en/course/icg
 ### 2nd laboratory exercise
 * written in C++
 * implementation of Bresenham's line algorithm
+
+### 3rd laboratory exercise
+* written in C++
+* drawing and filling a convex polygon
+* checking if a dot is inside the polygon
+
+### 4th laboratory exercise
+* written in C++
+* drawing figures described in the .obj files
+* checking if a dot is inside the figure
