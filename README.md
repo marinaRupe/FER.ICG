@@ -1,4 +1,4 @@
-# FER.ICG
+# FER.InteractiveComputerGraphics
 
 Laboratory exercises for the Interactive Computer Graphics course at FER, University of Zagreb (2016/2017).
 
